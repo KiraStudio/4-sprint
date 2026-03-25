@@ -1,8 +1,9 @@
 package daysteps
 
 import (
-	calories "4-sprint/pkg/spentcalories"
+	calories "4-sprint/internal/spentcalories"
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -19,7 +20,8 @@ func parsePackage(data string) (int, time.Duration, error) {
 	// TODO: реализовать функцию
 	strSplit := strings.Split(data, ",")
 	if len(strSplit) != 2 {
-		return 0, time.Duration(0), fmt.Errorf("длина слайса была равна 2, так как в строке данных у нас количество шагов и продолжительность.\n")
+		log.Println("длина слайса была равна 2, так как в строке данных у нас количество шагов и продолжительность.")
+		return 0, time.Duration(0), fmt.Errorf("длина слайса была равна 2, так как в строке данных у нас количество шагов и продолжительность.")
 	}
 
 	countSteps, err := strconv.Atoi(strSplit[0])
@@ -28,12 +30,18 @@ func parsePackage(data string) (int, time.Duration, error) {
 	}
 
 	if countSteps <= 0 {
-		return 0, time.Duration(0), fmt.Errorf("кол-во шагов должно быть больше нуля.\n")
+		log.Println("кол-во шагов должно быть больше нуля.")
+		return 0, time.Duration(0), fmt.Errorf("кол-во шагов должно быть больше нуля.")
 	}
 
 	t, err := time.ParseDuration(strSplit[1])
 	if err != nil {
 		return 0, time.Duration(0), err
+	}
+
+	if t <= 0 {
+		log.Println("продолжительность равна нулю или отрицательная.")
+		return 0, time.Duration(0), fmt.Errorf("продолжительность равна нулю или отрицательная.")
 	}
 
 	return countSteps, t, nil
@@ -63,5 +71,5 @@ func DayActionInfo(data string, weight, height float64) string {
 		fmt.Println("дистанция или потраченные калл. равны или меньше нуля")
 	}
 
-	return fmt.Sprintf("Количество шагов: %d.\nДистанция составила: %.2f км.\nВы сожгли: %.2f ккал.", steps, distance, walkingSpentCalories)
+	return fmt.Sprintf("Количество шагов: %d.\nДистанция составила %.2f км.\nВы сожгли %.2f ккал.\n", steps, distance, walkingSpentCalories)
 }

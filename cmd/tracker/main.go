@@ -1,11 +1,10 @@
 package main
 
 import (
+	"4-sprint/internal/daysteps"
+	"4-sprint/internal/spentcalories"
 	"fmt"
 	"log"
-
-	"4-sprint/internal/daysteps"
-	"4-sprint/pkg/spentcalories"
 )
 
 func main() {
